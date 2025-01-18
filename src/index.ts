@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { createBunWebSocket, serveStatic } from 'hono/bun'
-
+import { cache } from 'hono/cache'
 const app = new Hono();
 app.get('/*', serveStatic({
   root: "/web/", rewriteRequestPath: p => {
@@ -8,7 +8,13 @@ app.get('/*', serveStatic({
     return p.replace(/^\/web/, '')
   }
 }))
-
+app.get(
+  '*',
+  cache({
+    cacheName: 'my-app',
+    cacheControl: 'max-age=3600',
+  })
+)
 app.get('/admin/*', serveStatic({
   root: "/web/", rewriteRequestPath: p => {
 
