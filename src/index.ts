@@ -2,12 +2,6 @@ import { Hono } from 'hono'
 import { createBunWebSocket, serveStatic } from 'hono/bun'
 import { createMiddleware } from 'hono/factory'
 const app = new Hono();
-app.get('/*', serveStatic({
-  root: "/web/", rewriteRequestPath: p => {
-    // console.log(p)
-    return p.replace(/^\/web/, '')
-  }
-}))
 let s = createMiddleware((c, next) => {
 
 
@@ -16,6 +10,13 @@ let s = createMiddleware((c, next) => {
   return next()
 })
 app.use(s)
+app.get('/*', serveStatic({
+  root: "/web/", rewriteRequestPath: p => {
+    // console.log(p)
+    return p.replace(/^\/web/, '')
+  }
+}))
+
 app.get('/admin/*', serveStatic({
   root: "/web/", rewriteRequestPath: p => {
 
