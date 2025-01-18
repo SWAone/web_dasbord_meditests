@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { createBunWebSocket, serveStatic } from 'hono/bun'
-import { cache } from 'hono/cache'
+import { createMiddleware } from 'hono/factory'
 const app = new Hono();
 app.get('/*', serveStatic({
   root: "/web/", rewriteRequestPath: p => {
@@ -8,13 +8,14 @@ app.get('/*', serveStatic({
     return p.replace(/^\/web/, '')
   }
 }))
-app.get(
-  '*',
-  cache({
-    cacheName: 'my-app',
-    cacheControl: 'max-age=3600',
-  })
-)
+let s = createMiddleware((c, next) => {
+
+
+  c.header('cache-control', 'public, max-age=31536000')
+
+  return next()
+})
+app.use(s)
 app.get('/admin/*', serveStatic({
   root: "/web/", rewriteRequestPath: p => {
 
