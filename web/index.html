@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -10,9 +11,6 @@
 
     For more details:
     * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
   -->
   <base href="/">
 
@@ -27,7 +25,7 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>stady_dashbord</title>
   <link rel="manifest" href="manifest.json">
@@ -39,21 +37,43 @@
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
 </head>
+
 <body>
+  <!-- مؤشر تحميل يظهر عند بدء الصفحة -->
+  <div id="loading-indicator" style="
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: #fff; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      font-size: 20px;
+      font-family: Arial, sans-serif;
+    ">
+    جاري التحميل...
+  </div>
+
   <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
+    window.addEventListener('load', function (ev) {
+      // إخفاء مؤشر التحميل بعد تحميل التطبيق
+      var loadingIndicator = document.getElementById('loading-indicator');
+
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(function (appRunner) {
             appRunner.runApp();
+            loadingIndicator.style.display = 'none'; // إخفاء التحميل بعد تحميل التطبيق
           });
         }
       });
     });
   </script>
 </body>
+
 </html>
